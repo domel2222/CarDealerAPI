@@ -17,7 +17,7 @@ namespace CarDealerAPI.Contexts
         {
             this._config = config;
         }
-        // add factory context
+        
         public DbSet<Dealer> Dealers { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Address> Adresses {get;set;}
@@ -31,6 +31,16 @@ namespace CarDealerAPI.Contexts
 
             modelBuilder.Entity<Car>()
                 .Property(c => c.NameMark)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<Address>()
+                .Property(a => a.City)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<Address>()
+                .Property(a => a.Street)
                 .IsRequired()
                 .HasMaxLength(100);
         }
