@@ -1,4 +1,5 @@
 ﻿using CarDealerAPI.Contexts;
+using CarDealerAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace CarDealerAPI.Controllers
 {
 
     [ApiController]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class DealerController : ControllerBase
     {
@@ -20,6 +22,13 @@ namespace CarDealerAPI.Controllers
             this._dealerDbContext = dealerDbContext;
         }
 
-        public ActionResult<IEnumerable>
+        public ActionResult<IEnumerable<Dealer>> GetAllDealers()
+        {
+            var dealers = _dealerDbContext
+                .Dealers
+                .ToList();
+
+            return Ok(dealers);
+        }
     }
 }
