@@ -25,6 +25,7 @@ namespace CarDealerAPI
                 {
                     var dealers = GetDealers();
                     _dealerDbContext.Dealers.AddRange(dealers);
+                    _dealerDbContext.SaveChanges();
                 }
             }
         }
@@ -47,14 +48,14 @@ namespace CarDealerAPI
                             {
                                 NameMark = "MAN",
                                 Model = "TGS",
-                                Price = 225.000M,
+                                Price = 225.00M,
                             },
 
                             new Car()
                             {
                                 NameMark = "MAN",
                                 Model = "TGS",
-                                Price = 230.000M,
+                                Price = 230.00M,
                             },
                         },
                     Address = new Address()
@@ -79,7 +80,7 @@ namespace CarDealerAPI
                             {
                                 NameMark = "Lamborgini",
                                 Model = "Diablo",
-                                Price = 450.000M
+                                Price = 450.00M
                             },
                     },
                     Address = new Address()
@@ -90,7 +91,6 @@ namespace CarDealerAPI
 
                     }
                 }
-
             };
 
             return dealers;
