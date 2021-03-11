@@ -19,7 +19,7 @@ namespace CarDealerAPI.Contexts
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            return new DealerDbContext(new DbContextOptionsBuilder<DealerDbContext>().Options, config)
+            return new DealerDbContext(new DbContextOptionsBuilder<DealerDbContext>().Options, config);
         }
     }
 }

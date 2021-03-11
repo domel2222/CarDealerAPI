@@ -37,7 +37,10 @@ namespace CarDealerAPI.Contexts
 
         protected   override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString)
+            optionsBuilder.UseSqlServer(_config.GetConnectionString("DealersCar"), builder =>
+            {
+                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            });
         }
     }
 }
