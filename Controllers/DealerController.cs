@@ -72,6 +72,10 @@ namespace CarDealerAPI.Controllers
         [HttpPost]
         public ActionResult CreateDealer([FromBody] DealerCreateDTO createDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var dealer = _mapper.Map<Dealer>(createDto);
 
             _dealerDbContext.Add(dealer);
