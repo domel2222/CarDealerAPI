@@ -19,6 +19,10 @@ namespace CarDealerAPI.Profiles
                 .ForMember(m => m.Country, c => c.MapFrom(s => s.Address.Country));
 
             CreateMap<Car, CarReadDTO>().ReverseMap();
+
+            CreateMap<DealerCreateDTO, Dealer>()
+                .ForMember(r => r.Address, o => o.MapFrom(dto => new Address() 
+                { City = dto.City, Street = dto.Street, Country = dto.Country }));
         }
     }
 }

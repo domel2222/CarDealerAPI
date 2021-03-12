@@ -72,6 +72,12 @@ namespace CarDealerAPI.Controllers
         [HttpPost]
         public ActionResult CreateDealer([FromBody] DealerCreateDTO createDto)
         {
+            var dealer = _mapper.Map<Dealer>(createDto);
+
+            _dealerDbContext.Add(dealer);
+            _dealerDbContext.SaveChanges();
+
+            return Created($"api/Dealer/{dealer.Id}", null);
 
         }
     }
