@@ -15,7 +15,7 @@ namespace CarDealerAPI.Controllers
 {
 
     [ApiController]
-    //[Produces("application/json")]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class DealerController : ControllerBase
     {
@@ -48,7 +48,7 @@ namespace CarDealerAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<DealerReadDTO> GetOneDealer ([FromRoute]int id)
+        public ActionResult<DealerReadDTO> GetOneDealer (int id)
         {
 
             var dealer = _dealerService.GetDealerById(id);
@@ -61,7 +61,7 @@ namespace CarDealerAPI.Controllers
             return Ok(dealer);
         }
         [HttpPost]
-        public ActionResult CreateDealer([FromBody] DealerCreateDTO createDto)
+        public ActionResult CreateDealer(DealerCreateDTO createDto)
         {
             if (!ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace CarDealerAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteDealer([FromRoute]int id)
+        public ActionResult DeleteDealer(int id)
         {
             var isDeleted = _dealerService.DeleteDealer(id);
 
@@ -85,6 +85,23 @@ namespace CarDealerAPI.Controllers
             }
 
             return NotFound();
+        }
+        [HttpPut("{id}")]
+        public ActionResult UpdateDealer(DealerUpdateDTO dto, int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var isUpdated = _dealerService.UpdateDealer(dto, id);
+
+            if (!isUpdated)
+            {
+                return NotFound();
+            }
+
+            return Ok();
         }
     }
 }

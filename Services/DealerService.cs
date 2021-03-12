@@ -72,5 +72,22 @@ namespace CarDealerAPI.Services
 
             return true;
         }
+
+        public bool UpdateDealer(DealerUpdateDTO dto, int id)
+        {
+            var dealer = _dealerDbContext
+                .Dealers
+                .FirstOrDefault(a => a.Id == id);
+
+            if (dealer is null) return false;
+
+            dealer.DealerName = dto.DealerName;
+            dealer.Description = dto.Description;
+            dealer.TestDrive = dto.TestDrive;
+
+            _dealerDbContext.SaveChanges();
+
+            return true;
+        }
     }
 }
