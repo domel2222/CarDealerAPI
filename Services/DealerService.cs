@@ -58,5 +58,19 @@ namespace CarDealerAPI.Services
 
             return dealer.Id;
         }
+
+        public bool DeleteDealer(int id)
+        {
+            var dealer = _dealerDbContext
+                .Dealers
+                .FirstOrDefault(r => r.Id == id);
+
+            if (dealer is null) return false;
+
+            _dealerDbContext.Dealers.Remove(dealer);
+            _dealerDbContext.SaveChanges();
+
+            return true;
+        }
     }
 }
