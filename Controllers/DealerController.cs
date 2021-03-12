@@ -52,7 +52,7 @@ namespace CarDealerAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Dealer> GetOneDealer ([FromRoute]int id)
+        public ActionResult<DealerReadDTO> GetOneDealer ([FromRoute]int id)
         {
             var dealer = _dealerDbContext
                 .Dealers
