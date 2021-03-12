@@ -2,6 +2,7 @@
 using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
 using CarDealerAPI.Models;
+using CarDealerAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,20 +19,19 @@ namespace CarDealerAPI.Controllers
     [Route("api/[controller]")]
     public class DealerController : ControllerBase
     {
-        private readonly DealerDbContext _dealerDbContext;
-        private readonly IMapper _mapper;
+        private readonly IDealerService _dealerService;
 
-        public DealerController(DealerDbContext dealerDbContext, IMapper mapper)
+        public DealerController(IDealerService dealerService)
         {
-            this._dealerDbContext = dealerDbContext;
-            this._mapper = mapper;
+            this._dealerService = dealerService;
         }
+    
 
 
         [HttpGet]
         public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers()
         {
-            
+
 
             //var dealersDTO = dealers.Select(r => new DealerDTO()
             //{
@@ -41,25 +41,24 @@ namespace CarDealerAPI.Controllers
 
             //} ;
 
-            
-            
 
-            return Ok(dealersDto);
+            var dealersDTO = _dealerService.GetAllDealers();
+
+            return Ok(dealersDTO);
         }
 
         [HttpGet("{id}")]
         public ActionResult<DealerReadDTO> GetOneDealer ([FromRoute]int id)
         {
-            
+
+            var dealer = _dealerService.GetDealerById(id);
 
             if (dealer is null)
             {
                 return NotFound();
             }
 
-            var dealerDto = _mapper.Map<DealerReadDTO>(dealer);
-
-            return Ok(dealerDto);
+            return Ok(dealer);
         }
         [HttpPost]
         public ActionResult CreateDealer([FromBody] DealerCreateDTO createDto)
@@ -68,9 +67,10 @@ namespace CarDealerAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
 
-            return Created($"api/Dealer/{dealer.Id}", null);
+            var id = _dealerService.CreateDealer(createDto);
+
+            return Created($"api/Dealer/{id}", null);
 
         }
     }

@@ -49,12 +49,14 @@ namespace CarDealerAPI.Services
             return dealersDto;
         }
 
-        public void CreateDealer(DealerCreateDTO createDto)
+        public int CreateDealer(DealerCreateDTO createDto)
         {
             var dealer = _mapper.Map<Dealer>(createDto);
 
             _dealerDbContext.Add(dealer);
             _dealerDbContext.SaveChanges();
+
+            return dealer.Id;
         }
     }
 }

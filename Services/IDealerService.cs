@@ -5,7 +5,7 @@ namespace CarDealerAPI.Services
 {
     public interface IDealerService
     {
-        void CreateDealer(DealerCreateDTO createDto);
+        int CreateDealer(DealerCreateDTO createDto);
         IEnumerable<DealerReadDTO> GetAllDealers();
         DealerReadDTO GetDealerById(int id);
     }
