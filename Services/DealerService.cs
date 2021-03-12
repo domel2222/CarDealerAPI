@@ -3,6 +3,7 @@ using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
 using CarDealerAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace CarDealerAPI.Services
     {
         private readonly DealerDbContext _dealerDbContext;
         private readonly IMapper _mapper;
+        private readonly ILogger<DealerService> _logger;
 
-        public DealerService(DealerDbContext dealerDbContext, IMapper mapper)
+        public DealerService(DealerDbContext dealerDbContext, IMapper mapper, ILogger<DealerService> logger)
         {
             this._dealerDbContext = dealerDbContext;
             this._mapper = mapper;
+            this._logger = logger;
         }
 
         public DealerReadDTO GetDealerById(int id)
@@ -61,6 +64,10 @@ namespace CarDealerAPI.Services
 
         public bool DeleteDealer(int id)
         {
+
+            _logger.LogWarning($"Dealer with: {id} DELETE action invoke");
+            _logger.LogError($"Dealer with: {id} DELETE action invoke uuuuuuuuuuuuu");
+
             var dealer = _dealerDbContext
                 .Dealers
                 .FirstOrDefault(r => r.Id == id);
