@@ -22,6 +22,8 @@ namespace CarDealerAPI.Controllers
             this._dealerDbContext = dealerDbContext;
         }
 
+
+        [HttpGet]
         public ActionResult<IEnumerable<Dealer>> GetAllDealers()
         {
             var dealers = _dealerDbContext
@@ -29,6 +31,21 @@ namespace CarDealerAPI.Controllers
                 .ToList();
 
             return Ok(dealers);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<Dealer> GetOneDealer (int id)
+        {
+            var dealer = _dealerDbContext
+                .Dealers
+                .FirstOrDefault(r => r.Id == id);
+
+            if (dealer is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(dealer);
         }
     }
 }
