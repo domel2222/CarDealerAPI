@@ -8,6 +8,7 @@ namespace CarDealerAPI.Services
         int CreateDealer(DealerCreateDTO createDto);
         IEnumerable<DealerReadDTO> GetAllDealers();
         DealerReadDTO GetDealerById(int id);
+
         bool DeleteDealer(int id);
     }
 }

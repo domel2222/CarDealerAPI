@@ -15,7 +15,7 @@ namespace CarDealerAPI.Controllers
 {
 
     [ApiController]
-    [Produces("application/json")]
+    //[Produces("application/json")]
     [Route("api/[controller]")]
     public class DealerController : ControllerBase
     {
@@ -73,8 +73,9 @@ namespace CarDealerAPI.Controllers
             return Created($"api/Dealer/{id}", null);
 
         }
-        [HttpDelete("id")]
-        public ActionResult   DeleteDealer([FromBody] int id)
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteDealer([FromRoute]int id)
         {
             var isDeleted = _dealerService.DeleteDealer(id);
 
