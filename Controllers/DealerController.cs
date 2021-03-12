@@ -31,11 +31,7 @@ namespace CarDealerAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers()
         {
-            var dealers = _dealerDbContext
-                .Dealers
-                .Include(r => r.Address)
-                .Include(r => r.Cars)
-                .ToList();
+            
 
             //var dealersDTO = dealers.Select(r => new DealerDTO()
             //{
@@ -45,7 +41,7 @@ namespace CarDealerAPI.Controllers
 
             //} ;
 
-            var dealersDto = _mapper.Map<List<DealerReadDTO>>(dealers);
+            
             
 
             return Ok(dealersDto);
@@ -54,11 +50,7 @@ namespace CarDealerAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<DealerReadDTO> GetOneDealer ([FromRoute]int id)
         {
-            var dealer = _dealerDbContext
-                .Dealers
-                .Include(r => r.Address)
-                .Include(r => r.Cars)
-                .FirstOrDefault(r => r.Id == id);
+            
 
             if (dealer is null)
             {
@@ -76,10 +68,7 @@ namespace CarDealerAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var dealer = _mapper.Map<Dealer>(createDto);
-
-            _dealerDbContext.Add(dealer);
-            _dealerDbContext.SaveChanges();
+            
 
             return Created($"api/Dealer/{dealer.Id}", null);
 

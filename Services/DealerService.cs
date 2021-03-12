@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
+using CarDealerAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CarDealerAPI.Services
 {
-    public class DealerService
+    public class DealerService : IDealerService
     {
         private readonly DealerDbContext _dealerDbContext;
         private readonly IMapper _mapper;
@@ -32,10 +33,28 @@ namespace CarDealerAPI.Services
             if (dealer is null) return null;
 
             var result = _mapper.Map<DealerReadDTO>(dealer);
-             
+
             return result;
         }
+        public IEnumerable<DealerReadDTO> GetAllDealers()
+        {
+            var dealers = _dealerDbContext
+                .Dealers
+                .Include(r => r.Address)
+                .Include(r => r.Cars)
+                .ToList();
 
+            var dealersDto = _mapper.Map<List<DealerReadDTO>>(dealers);
 
+            return dealersDto;
+        }
+
+        public void CreateDealer(DealerCreateDTO createDto)
+        {
+            var dealer = _mapper.Map<Dealer>(createDto);
+
+            _dealerDbContext.Add(dealer);
+            _dealerDbContext.SaveChanges();
+        }
     }
 }

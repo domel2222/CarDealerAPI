@@ -1,5 +1,6 @@
 using CarDealerAPI.Contexts;
 using CarDealerAPI.Profiles;
+using CarDealerAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +34,7 @@ namespace CarDealerAPI
             services.AddControllers();
             services.AddScoped<DealerSeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
+            services.AddScoped<IDealerService, DealerService>();
             //services.AddAutoMapper(typeof(DealerProfile).GetTypeInfo().Assembly);
         }
 
