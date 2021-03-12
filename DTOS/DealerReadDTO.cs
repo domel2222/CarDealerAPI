@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarDealerAPI.DTOS
 {
-    public class DealerDTO
+    public class DealerReadDTO
     {
         public int Id { get; set; }
         public string DealerName { get; set; }
@@ -18,7 +18,7 @@ namespace CarDealerAPI.DTOS
         public string Street { get; set; }
         public string Country { get; set; }
 
-        public List<CarDTO> Cars { get; set; }
+        public List<CarReadDTO> Cars { get; set; }
 
     }
 }

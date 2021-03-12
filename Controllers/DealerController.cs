@@ -29,7 +29,7 @@ namespace CarDealerAPI.Controllers
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<DealerDTO>> GetAllDealers()
+        public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers()
         {
             var dealers = _dealerDbContext
                 .Dealers
@@ -45,7 +45,7 @@ namespace CarDealerAPI.Controllers
 
             //} ;
 
-            var dealersDto = _mapper.Map<List<DealerDTO>>(dealers);
+            var dealersDto = _mapper.Map<List<DealerReadDTO>>(dealers);
             
 
             return Ok(dealersDto);
@@ -65,9 +65,14 @@ namespace CarDealerAPI.Controllers
                 return NotFound();
             }
 
-            var dealerDto = _mapper.Map<DealerDTO>(dealer);
+            var dealerDto = _mapper.Map<DealerReadDTO>(dealer);
 
             return Ok(dealerDto);
+        }
+        [HttpPost]
+        public ActionResult CreateDealer([FromBody] DealerCreateDTO createDto)
+        {
+
         }
     }
 }

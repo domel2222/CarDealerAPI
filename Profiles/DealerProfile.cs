@@ -13,12 +13,12 @@ namespace CarDealerAPI.Profiles
     {
         public DealerProfile()
         {
-            CreateMap<Dealer, DealerDTO>()
+            CreateMap<Dealer, DealerReadDTO>()
                 .ForMember(m => m.City, c => c.MapFrom(s => s.Address.City))
                 .ForMember(m => m.Street, c => c.MapFrom(s => s.Address.Street))
                 .ForMember(m => m.Country, c => c.MapFrom(s => s.Address.Country));
 
-            CreateMap<Car, CarDTO>().ReverseMap();
+            CreateMap<Car, CarReadDTO>().ReverseMap();
         }
     }
 }

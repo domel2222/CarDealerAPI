@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarDealerAPI.DTOS
 {
-    public class CarDTO
+    public class CarReadDTO
     {
         public int Id { get; set; }
         public string NameMark { get; set; }
