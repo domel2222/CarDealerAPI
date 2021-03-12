@@ -1,4 +1,5 @@
 using CarDealerAPI.Contexts;
+using CarDealerAPI.Profiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 
@@ -30,6 +32,8 @@ namespace CarDealerAPI
             services.AddDbContext<DealerDbContext>();
             services.AddControllers();
             services.AddScoped<DealerSeeder>();
+            services.AddAutoMapper(this.GetType().Assembly);
+            //services.AddAutoMapper(typeof(DealerProfile).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

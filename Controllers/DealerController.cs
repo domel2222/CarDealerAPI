@@ -1,7 +1,9 @@
-﻿using CarDealerAPI.Contexts;
+﻿using AutoMapper;
+using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
 using CarDealerAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,12 @@ namespace CarDealerAPI.Controllers
     public class DealerController : ControllerBase
     {
         private readonly DealerDbContext _dealerDbContext;
+        private readonly IMapper _mapper;
 
-        public DealerController(DealerDbContext dealerDbContext)
+        public DealerController(DealerDbContext dealerDbContext, IMapper mapper)
         {
             this._dealerDbContext = dealerDbContext;
+            this._mapper = mapper;
         }
 
 
@@ -29,6 +33,8 @@ namespace CarDealerAPI.Controllers
         {
             var dealers = _dealerDbContext
                 .Dealers
+                .Include(r => r.Address)
+                .Include(r => r.Cars)
                 .ToList();
 
             //var dealersDTO = dealers.Select(r => new DealerDTO()
@@ -38,9 +44,11 @@ namespace CarDealerAPI.Controllers
             //    City = r.Address.City,  and so on 
 
             //} ;
+
+            var dealersDto = _mapper.Map<List<DealerDTO>>(dealers);
             
 
-            return Ok(dealers);
+            return Ok(dealersDto);
         }
 
         [HttpGet("{id}")]
@@ -48,6 +56,8 @@ namespace CarDealerAPI.Controllers
         {
             var dealer = _dealerDbContext
                 .Dealers
+                .Include(r => r.Address)
+                .Include(r => r.Cars)
                 .FirstOrDefault(r => r.Id == id);
 
             if (dealer is null)
@@ -55,7 +65,9 @@ namespace CarDealerAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(dealer);
+            var dealerDto = _mapper.Map<DealerDTO>(dealer);
+
+            return Ok(dealerDto);
         }
     }
 }
