@@ -1,4 +1,5 @@
 ﻿using CarDealerAPI.Contexts;
+using CarDealerAPI.DTOS;
 using CarDealerAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,17 +25,26 @@ namespace CarDealerAPI.Controllers
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<Dealer>> GetAllDealers()
+        public ActionResult<IEnumerable<DealerDTO>> GetAllDealers()
         {
             var dealers = _dealerDbContext
                 .Dealers
                 .ToList();
 
+            //var dealersDTO = dealers.Select(r => new DealerDTO()
+            //{
+            //    DealerName = r.DealerName,
+            //    Category = r.Category,
+            //    City = r.Address.City,  and so on 
+
+            //} ;
+            
+
             return Ok(dealers);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Dealer> GetOneDealer (int id)
+        public ActionResult<Dealer> GetOneDealer ([FromRoute]int id)
         {
             var dealer = _dealerDbContext
                 .Dealers
