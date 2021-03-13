@@ -35,7 +35,7 @@ namespace CarDealerAPI.Services
                 .Include(r => r.Cars)
                 .FirstOrDefault(r => r.Id == id);
 
-            if (dealer is null) throw new NotFoundException("dealer not found");
+            if (dealer == null) throw new NotFoundException("dealer not found");
 
             var result = _mapper.Map<DealerReadDTO>(dealer);
 
@@ -75,7 +75,7 @@ namespace CarDealerAPI.Services
                 .Dealers
                 .FirstOrDefault(r => r.Id == id);
 
-            if (dealer is null) throw new NotFoundException("dealer not found");
+            if (dealer == null) throw new NotFoundException("dealer not found");
 
             _dealerDbContext.Dealers.Remove(dealer);
             _dealerDbContext.SaveChanges();
@@ -89,7 +89,7 @@ namespace CarDealerAPI.Services
                 .Dealers
                 .FirstOrDefault(a => a.Id == id);
 
-            if (dealer is null)
+            if (dealer == null)
                 throw new NotFoundException("dealer not found");
 
             dealer.DealerName = dto.DealerName;

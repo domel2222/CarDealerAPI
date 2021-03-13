@@ -37,7 +37,6 @@ namespace CarDealerAPI
             services.AddDbContext<DealerDbContext>();
             services.AddScoped<DealerSeeder>();
             services.AddAutoMapper(typeof(DealerProfile).GetTypeInfo().Assembly);
-            //services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IDealerService, DealerService>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddle>();
