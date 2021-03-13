@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CarDealerAPI.Services
 {
-    public class CarService : ICarService, ICarService1
+    public class CarService : ICarService
     {
         private readonly DealerDbContext _dealerDbContext;
         private readonly IMapper _mapper;
@@ -25,9 +25,8 @@ namespace CarDealerAPI.Services
 
         public int CreateNewCar(int dealerId, CarCreateDTO newCar)
         {
-            var dealer = _dealerDbContext.Dealers.FirstOrDefault(d => d.Id == dealerId);
-            if (dealer == null) throw new NotFoundException("Dealer not found");
 
+            GetDealerById(dealerId);
 
             var carE = _mapper.Map<Car>(newCar);
             carE.DealerId = dealerId;
@@ -39,8 +38,7 @@ namespace CarDealerAPI.Services
 
         public CarReadDTO GetCarById(int dealerId, int carId)
         {
-            var dealer = _dealerDbContext.Dealers.FirstOrDefault(d => d.Id == dealerId);
-            if (dealer == null) throw new NotFoundException("Dealer not found");
+            var dealer = GetDealerById(dealerId);
 
             var car = _dealerDbContext.Cars.FirstOrDefault(c => c.Id == carId);
             if (car == null || car.DealerId != dealerId) throw new NotFoundException("Car not found");
@@ -52,15 +50,22 @@ namespace CarDealerAPI.Services
 
         public List<CarReadDTO> GetAllCarForDealer(int dealerId)
         {
-            var dealer = _dealerDbContext.Dealers
-                            .Include(c => c.Cars)
-                            .FirstOrDefault(d => d.Id == dealerId);
-
-            if (dealer == null) throw new NotFoundException("Dealer not found");
+            var dealer = GetDealerById(dealerId);
 
             var cars = _mapper.Map<List<CarReadDTO>>(dealer.Cars);
 
             return cars;
+        }
+
+        private Dealer GetDealerById(int dealerId)
+        {
+            var dealer = _dealerDbContext.Dealers
+                            .Include(d => d.Cars)
+                            .FirstOrDefault(d => d.Id == dealerId);
+
+            if (dealer == null) throw new NotFoundException("Dealer not found");
+
+            return dealer;
         }
     }
 }
