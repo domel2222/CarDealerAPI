@@ -57,6 +57,14 @@ namespace CarDealerAPI.Services
             return cars;
         }
 
+        public void DeleteAll(int dealerId)
+        {
+            var dealer = GetDealerById(dealerId);
+
+            _dealerDbContext.RemoveRange(dealer.Cars);
+            _dealerDbContext.SaveChanges();
+        }
+
         private Dealer GetDealerById(int dealerId)
         {
             var dealer = _dealerDbContext.Dealers

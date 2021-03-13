@@ -47,7 +47,10 @@ namespace CarDealerAPI.Controllers
         [HttpDelete]
         public  ActionResult DeleteAllCars(int dealerId)
         {
-            _carService.DeleteAll(delegate);
+            _carService.DeleteAll(dealerId);
+
+            return NoContent();
         }
+        //delet one car
     }
 }
