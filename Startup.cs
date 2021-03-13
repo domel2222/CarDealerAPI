@@ -38,6 +38,7 @@ namespace CarDealerAPI
             services.AddScoped<DealerSeeder>();
             services.AddAutoMapper(typeof(DealerProfile).GetTypeInfo().Assembly);
             services.AddScoped<IDealerService, DealerService>();
+            services.AddScoped<ICarService, CarService>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddle>();
             services.AddSwaggerGen(c =>
