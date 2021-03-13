@@ -20,6 +20,10 @@ namespace CarDealerAPI
         {
             if (_dealerDbContext.Database.CanConnect())
             {
+                if (!_dealerDbContext.Roles.Any())
+                {
+
+                }
 
                 if (!_dealerDbContext.Dealers.Any())
                 {
@@ -28,6 +32,27 @@ namespace CarDealerAPI
                     _dealerDbContext.SaveChanges();
                 }
             }
+        }
+
+        private IEnumerable<Role> GetRoles()
+        {
+            var roles = new List<Role>()
+            {
+                new Role()
+                {
+                    NameRole ="User"
+                },
+                new Role()
+                {
+                    NameRole ="Dealer Manager"
+                },
+                new Role()
+                {
+                    NameRole ="Administrator"
+                }
+
+            };
+            return roles;
         }
 
         private IEnumerable<Dealer> GetDealers()
