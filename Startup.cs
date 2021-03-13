@@ -20,6 +20,10 @@ using Excepticon.Extensions;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
 using CarDealerAPI.Models;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using CarDealerAPI.DTOS;
+using CarDealerAPI.Models.Validators;
 
 namespace CarDealerAPI
 {
@@ -35,7 +39,7 @@ namespace CarDealerAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation();
             services.AddDbContext<DealerDbContext>();
             services.AddScoped<DealerSeeder>();
             services.AddAutoMapper(typeof(DealerProfile).GetTypeInfo().Assembly);
@@ -45,6 +49,7 @@ namespace CarDealerAPI
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<RequestTimeMiddle>();
+            services.AddScoped<IValidator<UserCreateDTO>, RegisterDtoValidator>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarDEaler", Version = "v1" });
