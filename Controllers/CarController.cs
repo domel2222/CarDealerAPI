@@ -33,7 +33,16 @@ namespace CarDealerAPI.Controllers
         public ActionResult<CarReadDTO> GetCarInDealer(int dealerId, int carId)
         {
             CarReadDTO car = _carService.GetCarById(dealerId, carId);
+
+            return Ok(car);
         }
 
+        [HttpGet]
+        public ActionResult<List<CarReadDTO>>  GetAllCars(int dealerId)
+        {
+            var cars = _carService.GetAllCarForDealer(dealerId);
+
+            return Ok(cars);
+        }
     }
 }
