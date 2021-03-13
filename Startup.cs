@@ -24,6 +24,9 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using CarDealerAPI.DTOS;
 using CarDealerAPI.Models.Validators;
+using CarDealerAPI.Authentication;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace CarDealerAPI
 {
@@ -39,6 +42,28 @@ namespace CarDealerAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var authSettings = new AuthenticationSettings();
+
+            Configuration.GetSection("Authentication").Bind(authSettings);
+
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = "Bearer";
+                option.DefaultChallengeScheme = "Bearer";
+                option.DefaultScheme = "Bearer";
+            }).AddJwtBearer(configureOptions =>
+            {
+                configureOptions.RequireHttpsMetadata = false;
+                configureOptions.SaveToken = true;
+                configureOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = authSettings.JwtIssuer,
+                    ValidAudience = authSettings.JwtIssuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.JwtKey)),
+                };
+            });
+
+
             services.AddControllers().AddFluentValidation();
             services.AddDbContext<DealerDbContext>();
             services.AddScoped<DealerSeeder>();
