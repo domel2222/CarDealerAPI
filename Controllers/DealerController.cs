@@ -3,6 +3,7 @@ using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
 using CarDealerAPI.Models;
 using CarDealerAPI.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,8 +26,6 @@ namespace CarDealerAPI.Controllers
         {
             this._dealerService = dealerService;
         }
-    
-
 
         [HttpGet]
         public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers()
@@ -40,11 +39,18 @@ namespace CarDealerAPI.Controllers
             //    City = r.Address.City,  and so on 
 
             //} ;
+            //try
+            //{
+                var dealersDTO = _dealerService.GetAllDealers();
 
+                return Ok(dealersDTO);
+            //}
+            //catch (Exception)
+            //{
 
-            var dealersDTO = _dealerService.GetAllDealers();
-
-            return Ok(dealersDTO);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Database fail");
+            //}
+               
         }
 
         [HttpGet("{id}")]
@@ -53,20 +59,11 @@ namespace CarDealerAPI.Controllers
 
             var dealer = _dealerService.GetDealerById(id);
 
-            if (dealer is null)
-            {
-                return NotFound();
-            }
-
             return Ok(dealer);
         }
         [HttpPost]
         public ActionResult CreateDealer(DealerCreateDTO createDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             var id = _dealerService.CreateDealer(createDto);
 
@@ -77,29 +74,14 @@ namespace CarDealerAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeleteDealer(int id)
         {
-            var isDeleted = _dealerService.DeleteDealer(id);
+            _dealerService.DeleteDealer(id);
 
-            if (isDeleted)
-            {
-                return NoContent();
-            }
-
-            return NotFound();
+            return NoContent();
         }
         [HttpPut("{id}")]
         public ActionResult UpdateDealer(DealerUpdateDTO dto, int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var isUpdated = _dealerService.UpdateDealer(dto, id);
-
-            if (!isUpdated)
-            {
-                return NotFound();
-            }
+             _dealerService.UpdateDealer(dto, id);
 
             return Ok();
         }

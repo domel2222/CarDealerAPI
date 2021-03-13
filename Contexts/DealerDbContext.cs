@@ -13,6 +13,8 @@ namespace CarDealerAPI.Contexts
     {
         private readonly IConfiguration _config;
 
+
+
         public DealerDbContext(DbContextOptions option, IConfiguration config) : base(option)
         {
             this._config = config;
@@ -59,6 +61,7 @@ namespace CarDealerAPI.Contexts
             {
                 builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
             });
+            
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
+using CarDealerAPI.Exceptions;
 using CarDealerAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace CarDealerAPI.Services
 {
@@ -33,7 +35,7 @@ namespace CarDealerAPI.Services
                 .Include(r => r.Cars)
                 .FirstOrDefault(r => r.Id == id);
 
-            if (dealer is null) return null;
+            if (dealer is null) throw new NotFoundException("dealer not found");
 
             var result = _mapper.Map<DealerReadDTO>(dealer);
 
@@ -50,6 +52,7 @@ namespace CarDealerAPI.Services
             var dealersDto = _mapper.Map<List<DealerReadDTO>>(dealers);
 
             return dealersDto;
+
         }
 
         public int CreateDealer(DealerCreateDTO createDto)
@@ -62,7 +65,7 @@ namespace CarDealerAPI.Services
             return dealer.Id;
         }
 
-        public bool DeleteDealer(int id)
+        public void DeleteDealer(int id)
         {
 
             _logger.LogWarning($"Dealer with: {id} DELETE action invoke");
@@ -72,21 +75,22 @@ namespace CarDealerAPI.Services
                 .Dealers
                 .FirstOrDefault(r => r.Id == id);
 
-            if (dealer is null) return false;
+            if (dealer is null) throw new NotFoundException("dealer not found");
 
             _dealerDbContext.Dealers.Remove(dealer);
             _dealerDbContext.SaveChanges();
 
-            return true;
+            
         }
 
-        public bool UpdateDealer(DealerUpdateDTO dto, int id)
+        public void UpdateDealer(DealerUpdateDTO dto, int id)
         {
             var dealer = _dealerDbContext
                 .Dealers
                 .FirstOrDefault(a => a.Id == id);
 
-            if (dealer is null) return false;
+            if (dealer is null)
+                throw new NotFoundException("dealer not found");
 
             dealer.DealerName = dto.DealerName;
             dealer.Description = dto.Description;
@@ -94,7 +98,7 @@ namespace CarDealerAPI.Services
 
             _dealerDbContext.SaveChanges();
 
-            return true;
+            
         }
     }
 }
