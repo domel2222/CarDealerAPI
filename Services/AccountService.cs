@@ -31,7 +31,8 @@ namespace CarDealerAPI.Services
                 RoleId = userDto.RoleId
                 
             };
-            _passwordHasher.HashPassword(newUser, userDto.Password);
+            var passwordHashed = _passwordHasher.HashPassword(newUser, userDto.Password);
+            newUser.PasswordHash = passwordHashed; 
             _dealerDbContext.Add(newUser);
             _dealerDbContext.SaveChanges();
         }
