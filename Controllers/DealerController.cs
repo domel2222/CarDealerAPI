@@ -48,7 +48,7 @@ namespace CarDealerAPI.Controllers
             //catch (Exception)
             //{
 
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Database fail");
+                //return this.StatusCode(StatusCodes.Status500InternalServerError, "Database fail");
             //}
                
         }
