@@ -23,6 +23,8 @@ namespace CarDealerAPI.Contexts
         public DbSet<Dealer> Dealers { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Address> Adresses {get;set;}
+        public DbSet<User> Users {get;set;}
+        public DbSet<Role> Roles {get;set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,13 +47,22 @@ namespace CarDealerAPI.Contexts
                 .Property(a => a.Street)
                 .IsRequired()
                 .HasMaxLength(100);
+            
+            modelBuilder.Entity<User>()
+                .Property(e => e.Email)
+                .IsRequired();
+
+            modelBuilder.Entity<Role>()
+                .Property(e => e.NameRole)
+                .IsRequired();
+
 
 
 
             //No type was specified for the decimal property 'Price' on entity type 'Car'. 
             //This will cause values to be silently truncated if they do not fit in the default precision and scale. 
-              //  Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType()', 
-                //specify precision and scale using 'HasPrecision()' 
+            //  Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType()', 
+            //specify precision and scale using 'HasPrecision()' 
             //or configure a value converter using 'HasConversion()'
         }
 

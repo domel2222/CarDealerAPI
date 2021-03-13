@@ -19,5 +19,6 @@ namespace CarDealerAPI.Models
         public int RoleId { get; set; }// foreign key
         
         public virtual Role Role { get; set; }
+
     }
 }
