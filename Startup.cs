@@ -18,6 +18,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Excepticon.Extensions;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Identity;
+using CarDealerAPI.Models;
 
 namespace CarDealerAPI
 {
@@ -41,6 +43,7 @@ namespace CarDealerAPI
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ErrorHandlingMiddleware>();
+            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<RequestTimeMiddle>();
             services.AddSwaggerGen(c =>
             {
