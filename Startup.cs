@@ -40,6 +40,7 @@ namespace CarDealerAPI
             //services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IDealerService, DealerService>();
             services.AddScoped<ErrorHandlingMiddleware>();
+            services.AddScoped<RequestTimeMiddle>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarDEaler", Version = "v1" });
@@ -72,7 +73,7 @@ namespace CarDealerAPI
             //    await context.Response.WriteAsync("Hello from 2nd delegate.");
             //});
             app.UseMiddleware<ErrorHandlingMiddleware>();
-
+            app.UseMiddleware<RequestTimeMiddle>();
             app.UseHttpsRedirection();
 
             app.UseSwagger();
