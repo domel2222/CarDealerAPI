@@ -22,7 +22,9 @@ namespace CarDealerAPI
             {
                 if (!_dealerDbContext.Roles.Any())
                 {
-
+                   var roles = GetRoles();
+                    _dealerDbContext.Roles.AddRange(roles);
+                    _dealerDbContext.SaveChanges();
                 }
 
                 if (!_dealerDbContext.Dealers.Any())
