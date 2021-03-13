@@ -109,7 +109,7 @@ namespace CarDealerAPI
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseMiddleware<RequestTimeMiddle>();
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
