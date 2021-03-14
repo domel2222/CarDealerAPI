@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
+using CarDealerAPI.Authorization;
 using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
 using CarDealerAPI.Exceptions;
 using CarDealerAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,12 +22,14 @@ namespace CarDealerAPI.Services
         private readonly DealerDbContext _dealerDbContext;
         private readonly IMapper _mapper;
         private readonly ILogger<DealerService> _logger;
+        private readonly IAuthorizationService _authorizationService;
 
-        public DealerService(DealerDbContext dealerDbContext, IMapper mapper, ILogger<DealerService> logger)
+        public DealerService(DealerDbContext dealerDbContext, IMapper mapper, ILogger<DealerService> logger, IAuthorizationService authorizationService)
         {
             this._dealerDbContext = dealerDbContext;
             this._mapper = mapper;
             this._logger = logger;
+            this._authorizationService = authorizationService;
         }
 
         public DealerReadDTO GetDealerById(int id)
@@ -55,10 +60,11 @@ namespace CarDealerAPI.Services
 
         }
 
-        public int CreateDealer(DealerCreateDTO createDto)
+        public int CreateDealer(DealerCreateDTO createDto, int userId)
         {
             var dealer = _mapper.Map<Dealer>(createDto);
 
+            dealer.CreatedById = userId;
             _dealerDbContext.Add(dealer);
             _dealerDbContext.SaveChanges();
 
@@ -83,7 +89,7 @@ namespace CarDealerAPI.Services
             
         }
 
-        public void UpdateDealer(DealerUpdateDTO dto, int id)
+        public void UpdateDealer(DealerUpdateDTO dto, int id, ClaimsPrincipal user)
         {
             var dealer = _dealerDbContext
                 .Dealers
@@ -91,6 +97,13 @@ namespace CarDealerAPI.Services
 
             if (dealer == null)
                 throw new NotFoundException("dealer not found");
+
+            var authResult = _authorizationService.AuthorizeAsync(user, dealer, new ResouceOperationRequirement(ResouceOperation.Update)).Result;
+
+            if (!authResult.Succeeded)
+            {
+                throw new ForbiddenExc("Access denied");
+            }
 
             dealer.DealerName = dto.DealerName;
             dealer.Description = dto.Description;

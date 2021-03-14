@@ -77,6 +77,7 @@ namespace CarDealerAPI
             services.AddDbContext<DealerDbContext>();
             services.AddScoped<DealerSeeder>();
             services.AddScoped<IAuthorizationHandler, CheckAgeHandler>();
+            services.AddScoped<IAuthorizationHandler, ResouceOperationRequirementHandler>();
             services.AddAutoMapper(typeof(DealerProfile).GetTypeInfo().Assembly);
             services.AddScoped<IDealerService, DealerService>();
             services.AddScoped<ICarService, CarService>();

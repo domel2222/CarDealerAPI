@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -73,8 +74,8 @@ namespace CarDealerAPI.Controllers
         // test for user 
         public ActionResult CreateDealer(DealerCreateDTO createDto)
         {
-
-            var id = _dealerService.CreateDealer(createDto);
+            var userId =   int.Parse(User.FindFirst(u => u.Type == ClaimTypes.NameIdentifier).Value);
+            var id = _dealerService.CreateDealer(createDto, userId);
 
             return Created($"api/Dealer/{id}", null);
 
