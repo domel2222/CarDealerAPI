@@ -44,8 +44,8 @@ namespace CarDealerAPI
         {
             var authSettings = new AuthenticationSettings();
 
-            Configuration.GetSection("Authentication").Bind(authSettings);
-
+            Configuration.GetSection("AuthenticationDealer").Bind(authSettings);
+            services.AddSingleton(authSettings);
             services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = "Bearer";
@@ -109,7 +109,9 @@ namespace CarDealerAPI
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseMiddleware<RequestTimeMiddle>();
             app.UseHttpsRedirection();
+
             app.UseAuthentication();
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

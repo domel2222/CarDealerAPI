@@ -1,11 +1,16 @@
-﻿using CarDealerAPI.Contexts;
+﻿using CarDealerAPI.Authentication;
+using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
 using CarDealerAPI.Exceptions;
 using CarDealerAPI.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,20 +20,54 @@ namespace CarDealerAPI.Services
     {
         private readonly DealerDbContext _dealerDbContext;
         private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly AuthenticationSettings _authenticationSettings;
 
-        public AccountService(DealerDbContext dealerDbContext, IPasswordHasher<User> passwordHasher)
+        public AccountService(DealerDbContext dealerDbContext, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings)
         {
             this._dealerDbContext = dealerDbContext;
             this._passwordHasher = passwordHasher;
+            this._authenticationSettings = authenticationSettings;
         }
+
+
 
         public string GenerateToken(UserLoginDTO login)
         {
-            var user = _dealerDbContext.Users.FirstOrDefault(u => u.Email == login.Email);
+            var user = _dealerDbContext.Users
+                .Include(u => u.Role)
+                .FirstOrDefault(u => u.Email == login.Email);
 
             if (user == null) throw new BadRequestException("Username or password is wrong");
 
-            return "mama";
+            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, login.Password);
+
+            if (result == PasswordVerificationResult.Failed) throw new BadRequestException("Username or password is wrong");
+            //refactor outside method
+            var cliams = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimTypes.Role, $"{user.Role}"),
+                new Claim("DateBirth", user.DateOfBirth.Value.ToString("yyyy-mm-dd")),
+                new Claim("Nationality", user.Nationality)
+
+            };
+
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
+            var credencial = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expire = DateTime.Now.AddMinutes(_authenticationSettings.JwtExpiresDays);
+
+            var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer, _authenticationSettings.JwtIssuer,
+                cliams,
+                expires: expire,
+                signingCredentials: credencial);
+
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+
+            return tokenHandler.WriteToken(token);
 
         }
 
