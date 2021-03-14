@@ -71,7 +71,7 @@ namespace CarDealerAPI.Services
             return dealer.Id;
         }
 
-        public void DeleteDealer(int id)
+        public void DeleteDealer(int id, ClaimsPrincipal user)
         {
 
             _logger.LogWarning($"Dealer with: {id} DELETE action invoke");
@@ -82,6 +82,13 @@ namespace CarDealerAPI.Services
                 .FirstOrDefault(r => r.Id == id);
 
             if (dealer == null) throw new NotFoundException("dealer not found");
+
+            var authResult = _authorizationService.AuthorizeAsync(user, dealer, new ResouceOperationRequirement(ResouceOperation.Delete)).Result;
+
+            if (!authResult.Succeeded)
+            {
+                throw new ForbiddenExc("Access denied");
+            }
 
             _dealerDbContext.Dealers.Remove(dealer);
             _dealerDbContext.SaveChanges();

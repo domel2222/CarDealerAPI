@@ -9,7 +9,7 @@ namespace CarDealerAPI.Services
         int CreateDealer(DealerCreateDTO createDto, int userId);
         IEnumerable<DealerReadDTO> GetAllDealers();
         DealerReadDTO GetDealerById(int id);
-        void DeleteDealer(int id);
+        void DeleteDealer(int id, ClaimsPrincipal user);
         void UpdateDealer(DealerUpdateDTO dto, int id, ClaimsPrincipal user);
     }
 }

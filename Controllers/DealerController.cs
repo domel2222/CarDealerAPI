@@ -84,14 +84,14 @@ namespace CarDealerAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeleteDealer(int id)
         {
-            _dealerService.DeleteDealer(id);
+            _dealerService.DeleteDealer(id, User);
 
             return NoContent();
         }
         [HttpPut("{id}")]
         public ActionResult UpdateDealer(DealerUpdateDTO dto, int id)
         {
-             _dealerService.UpdateDealer(dto, id);
+             _dealerService.UpdateDealer(dto, id, User);
 
             return Ok();
         }

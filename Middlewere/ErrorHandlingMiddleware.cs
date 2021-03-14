@@ -32,9 +32,10 @@ namespace CarDealerAPI.Middlewere
                 context.Response.StatusCode = 400;
                  await context.Response.WriteAsync(badRequest.Message);
             }
-            catch (ForbiddenExc ForbiddenExc)
+            catch (ForbiddenExc forbiddenExc)
             {
                 context.Response.StatusCode = 403;
+                await context.Response.WriteAsync(forbiddenExc.Message);
             }
             catch (NotFoundException notFoundException)
             {
