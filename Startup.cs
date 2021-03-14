@@ -27,6 +27,7 @@ using CarDealerAPI.Models.Validators;
 using CarDealerAPI.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CarDealerAPI.Authorization;
 
 namespace CarDealerAPI
 {
@@ -67,6 +68,7 @@ namespace CarDealerAPI
             {
                 policy.AddPolicy("HasNation", b => b.RequireClaim("Nationality", "Poland"));
                 policy.AddPolicy("ColorEyes", b => b.RequireClaim("ColorEye", "blue", "green", "grey"));
+                policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(18)));
 
             });
 

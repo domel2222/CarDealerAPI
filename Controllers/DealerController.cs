@@ -30,7 +30,7 @@ namespace CarDealerAPI.Controllers
         }
 
         [HttpGet]
-        
+        [Authorize(Policy = "ColorEyes")]
         public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers()
         {           
 
@@ -57,7 +57,7 @@ namespace CarDealerAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = "HasNation")]
+        //[Authorize(Policy = "HasNation")]
         public ActionResult<DealerReadDTO> GetOneDealer (int id)
         {
             //create for this repository and try as Task
