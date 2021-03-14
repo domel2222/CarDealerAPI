@@ -30,7 +30,8 @@ namespace CarDealerAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "ColorEyes")]
+        //[Authorize(Policy = "ColorEyes")]
+        [Authorize(Policy = "OnlyForEagles")]
         public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers()
         {           
 

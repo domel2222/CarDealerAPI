@@ -28,6 +28,7 @@ using CarDealerAPI.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CarDealerAPI.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarDealerAPI
 {
@@ -71,10 +72,11 @@ namespace CarDealerAPI
                 policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(18)));
 
             });
-
+            
             services.AddControllers().AddFluentValidation();
             services.AddDbContext<DealerDbContext>();
             services.AddScoped<DealerSeeder>();
+            services.AddScoped<IAuthorizationHandler, CheckAgeHandler>();
             services.AddAutoMapper(typeof(DealerProfile).GetTypeInfo().Assembly);
             services.AddScoped<IDealerService, DealerService>();
             services.AddScoped<ICarService, CarService>();
