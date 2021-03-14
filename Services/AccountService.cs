@@ -57,7 +57,7 @@ namespace CarDealerAPI.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
             
             var credencial = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expire = DateTime.Now.AddMinutes(_authenticationSettings.JwtExpiresDays);
+            var expire = DateTime.Now.AddMinutes(_authenticationSettings.JwtExpiresDays);   
 
             var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer, _authenticationSettings.JwtIssuer,
                 cliams,
