@@ -19,7 +19,7 @@ namespace CarDealerAPI.Models
         public bool TestDrive { get; set; }
         public string ContactEmail { get; set; }
         public string ContactNumber { get; set; }
-        public int CreatedById { get; set; }
+        public int? CreatedById { get; set; }
         public virtual User CreatedBy { get; set; }
         public int AddressId { get; set; }
         public virtual Address Address { get; set; }
