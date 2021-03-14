@@ -1,5 +1,6 @@
 ﻿using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
+using CarDealerAPI.Exceptions;
 using CarDealerAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -19,6 +20,16 @@ namespace CarDealerAPI.Services
         {
             this._dealerDbContext = dealerDbContext;
             this._passwordHasher = passwordHasher;
+        }
+
+        public string GenerateToken(UserLoginDTO login)
+        {
+            var user = _dealerDbContext.Users.FirstOrDefault(u => u.Email == login.Email);
+
+            if (user == null) throw new BadRequestException("Username or password is wrong");
+
+            return "mama";
+
         }
 
         public void RegisterUser(UserCreateDTO userDto)

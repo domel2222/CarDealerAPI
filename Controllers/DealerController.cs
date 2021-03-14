@@ -56,7 +56,7 @@ namespace CarDealerAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<DealerReadDTO> GetOneDealer (int id)
         {
-
+            //create for this repository and try as Task
             var dealer = _dealerService.GetDealerById(id);
 
             return Ok(dealer);
