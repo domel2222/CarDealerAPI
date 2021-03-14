@@ -95,6 +95,12 @@ namespace CarDealerAPI.Services
                     new Claim("Nationality", user.Nationality)
                 );
             }
+            if (!string.IsNullOrEmpty(user.ColorEye))
+            {
+                cliams.Add(
+                    new Claim("ColorEye", user.ColorEye)
+                    );
+            }
 
             return cliams;
         }

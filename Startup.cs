@@ -63,6 +63,12 @@ namespace CarDealerAPI
                 };
             });
 
+            services.AddAuthorization(policy =>
+            {
+                policy.AddPolicy("HasNation", b => b.RequireClaim("Nationality", "Poland"));
+                policy.AddPolicy("ColorEyes", b => b.RequireClaim("ColorEye", "blue", "green", "grey"));
+
+            });
 
             services.AddControllers().AddFluentValidation();
             services.AddDbContext<DealerDbContext>();

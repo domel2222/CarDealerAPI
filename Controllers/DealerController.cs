@@ -57,7 +57,7 @@ namespace CarDealerAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize(Policy = "HasNation")]
         public ActionResult<DealerReadDTO> GetOneDealer (int id)
         {
             //create for this repository and try as Task
