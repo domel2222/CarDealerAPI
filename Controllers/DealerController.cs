@@ -3,6 +3,7 @@ using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
 using CarDealerAPI.Models;
 using CarDealerAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace CarDealerAPI.Controllers
     [ApiController]
     [Produces("application/json")]
     [Route("api/[controller]")]
+    [Authorize]
     public class DealerController : ControllerBase
     {
         private readonly IDealerService _dealerService;
@@ -28,8 +30,9 @@ namespace CarDealerAPI.Controllers
         }
 
         [HttpGet]
+        
         public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers()
-        {
+        {           
 
 
             //var dealersDTO = dealers.Select(r => new DealerDTO()
@@ -54,6 +57,7 @@ namespace CarDealerAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ActionResult<DealerReadDTO> GetOneDealer (int id)
         {
             //create for this repository and try as Task

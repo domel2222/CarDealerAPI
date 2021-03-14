@@ -31,10 +31,12 @@ namespace CarDealerAPI.Controllers
             return Ok();
         }
 
-        //[HttpPost("login")]
-        //public ActionResult LoginUser(UserLoginDTO login)
-        //{
-        //    string token = _accountService.GenerateToken(login);
-        //}
+        [HttpPost("login")]
+        public ActionResult LoginUser(UserLoginDTO login)
+        {
+            string token = _accountService.GenerateToken(login);
+
+            return Ok(token);
+        }
     }
 }

@@ -47,14 +47,15 @@ namespace CarDealerAPI.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-                new Claim(ClaimTypes.Role, $"{user.Role}"),
-                new Claim("DateBirth", user.DateOfBirth.Value.ToString("yyyy-mm-dd")),
+                new Claim(ClaimTypes.Role, $"{user.Role.NameRole}"),
+                new Claim("DateBirth", user.DateOfBirth.Value.ToString("yyyy-MM-dd")),
                 new Claim("Nationality", user.Nationality)
 
             };
 
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
+            
             var credencial = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expire = DateTime.Now.AddMinutes(_authenticationSettings.JwtExpiresDays);
 

@@ -44,7 +44,7 @@ namespace CarDealerAPI
         {
             var authSettings = new AuthenticationSettings();
 
-            Configuration.GetSection("AuthenticationDealer").Bind(authSettings);
+            Configuration.GetSection("AuthenticationRysiek").Bind(authSettings);
             services.AddSingleton(authSettings);
             services.AddAuthentication(option =>
             {
@@ -118,6 +118,7 @@ namespace CarDealerAPI
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "CarDealerAPI");
             });
             app.UseRouting();
+
 
             app.UseAuthorization();
 
