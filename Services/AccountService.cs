@@ -43,30 +43,20 @@ namespace CarDealerAPI.Services
 
             if (result == PasswordVerificationResult.Failed) throw new BadRequestException("Username or password is wrong");
             //refactor outside method
-            var cliams = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-                new Claim(ClaimTypes.Role, $"{user.Role.NameRole}"),
-                new Claim("DateBirth", user.DateOfBirth.Value.ToString("yyyy-MM-dd")),
-                new Claim("Nationality", user.Nationality)
 
-            };
-
+            List<Claim> cliams = CreateClaims(user);
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
-            
+
             var credencial = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expire = DateTime.Now.AddMinutes(_authenticationSettings.JwtExpiresDays);   
+            var expire = DateTime.Now.AddMinutes(_authenticationSettings.JwtExpiresDays);
 
             var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer, _authenticationSettings.JwtIssuer,
                 cliams,
                 expires: expire,
                 signingCredentials: credencial);
 
-
             var tokenHandler = new JwtSecurityTokenHandler();
-
 
             return tokenHandler.WriteToken(token);
 
@@ -86,6 +76,27 @@ namespace CarDealerAPI.Services
             newUser.PasswordHash = passwordHashed; 
             _dealerDbContext.Add(newUser);
             _dealerDbContext.SaveChanges();
+        }
+        private static List<Claim> CreateClaims(User user)
+        {
+            var cliams = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimTypes.Role, $"{user.Role.NameRole}"),
+                new Claim("DateBirth", user.DateOfBirth.Value.ToString("yyyy-MM-dd")),
+
+
+            };
+
+            if (!string.IsNullOrEmpty(user.Nationality))
+            {
+                cliams.Add(
+                    new Claim("Nationality", user.Nationality)
+                );
+            }
+
+            return cliams;
         }
     }
 }
