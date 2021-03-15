@@ -74,8 +74,8 @@ namespace CarDealerAPI.Controllers
         // test for user 
         public ActionResult CreateDealer(DealerCreateDTO createDto)
         {
-            var userId =   int.Parse(User.FindFirst(u => u.Type == ClaimTypes.NameIdentifier).Value);
-            var id = _dealerService.CreateDealer(createDto, userId);
+            //var userId =   int.Parse(User.FindFirst(u => u.Type == ClaimTypes.NameIdentifier).Value);
+            var id = _dealerService.CreateDealer(createDto);
 
             return Created($"api/Dealer/{id}", null);
 
@@ -84,14 +84,16 @@ namespace CarDealerAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeleteDealer(int id)
         {
-            _dealerService.DeleteDealer(id, User);
+            //_dealerService.DeleteDealer(id, User);
+            _dealerService.DeleteDealer(id,);
 
             return NoContent();
         }
         [HttpPut("{id}")]
         public ActionResult UpdateDealer(DealerUpdateDTO dto, int id)
         {
-             _dealerService.UpdateDealer(dto, id, User);
+             //_dealerService.UpdateDealer(dto, id, User);
+             _dealerService.UpdateDealer(dto, id);
 
             return Ok();
         }

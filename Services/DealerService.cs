@@ -23,13 +23,16 @@ namespace CarDealerAPI.Services
         private readonly IMapper _mapper;
         private readonly ILogger<DealerService> _logger;
         private readonly IAuthorizationService _authorizationService;
+        private readonly IUserContextService _userContextService;
 
-        public DealerService(DealerDbContext dealerDbContext, IMapper mapper, ILogger<DealerService> logger, IAuthorizationService authorizationService)
+        public DealerService(DealerDbContext dealerDbContext, IMapper mapper, ILogger<DealerService> logger, 
+            IAuthorizationService authorizationService, IUserContextService userContextService)
         {
             this._dealerDbContext = dealerDbContext;
             this._mapper = mapper;
             this._logger = logger;
             this._authorizationService = authorizationService;
+            this._userContextService = userContextService;
         }
 
         public DealerReadDTO GetDealerById(int id)
@@ -60,21 +63,21 @@ namespace CarDealerAPI.Services
 
         }
 
-        public int CreateDealer(DealerCreateDTO createDto, int userId)
+        public int CreateDealer(DealerCreateDTO createDto)
         {
             var dealer = _mapper.Map<Dealer>(createDto);
 
 
             ///////////////////////////////something wrong  not assign 
 
-            dealer.CreatedById = userId;
+            dealer.CreatedById = _userContextService.GetUserId;
             _dealerDbContext.Add(dealer);
             _dealerDbContext.SaveChanges();
 
             return dealer.Id;
         }
 
-        public void DeleteDealer(int id, ClaimsPrincipal user)
+        public void DeleteDealer(int id)
         {
 
             _logger.LogWarning($"Dealer with: {id} DELETE action invoke");
@@ -88,7 +91,7 @@ namespace CarDealerAPI.Services
 
             if (dealer == null) throw new NotFoundException("dealer not found");
 
-            var authResult = _authorizationService.AuthorizeAsync(user, dealer, new ResouceOperationRequirement(ResouceOperation.Delete)).Result;
+            var authResult = _authorizationService.AuthorizeAsync(_userContextService.User, dealer, new ResouceOperationRequirement(ResouceOperation.Delete)).Result;
 
             if (!authResult.Succeeded)
             {
@@ -103,7 +106,7 @@ namespace CarDealerAPI.Services
 
         }
 
-        public void UpdateDealer(DealerUpdateDTO dto, int id, ClaimsPrincipal user)
+        public void UpdateDealer(DealerUpdateDTO dto, int id)
         {
             var dealer = _dealerDbContext
                 .Dealers
@@ -112,7 +115,7 @@ namespace CarDealerAPI.Services
             if (dealer == null)
                 throw new NotFoundException("dealer not found");
 
-            var authResult = _authorizationService.AuthorizeAsync(user, dealer, new ResouceOperationRequirement(ResouceOperation.Update)).Result;
+            var authResult = _authorizationService.AuthorizeAsync(_userContextService.User, dealer, new ResouceOperationRequirement(ResouceOperation.Update)).Result;
 
             if (!authResult.Succeeded)
             {

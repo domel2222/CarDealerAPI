@@ -84,6 +84,8 @@ namespace CarDealerAPI
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddScoped<IUserContextService, UserContextService>();
+            services.AddHttpContextAccessor();
             services.AddScoped<RequestTimeMiddle>();
             services.AddScoped<IValidator<UserCreateDTO>, RegisterDtoValidator>();
             services.AddSwaggerGen(c =>
