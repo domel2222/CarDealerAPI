@@ -64,6 +64,9 @@ namespace CarDealerAPI.Services
         {
             var dealer = _mapper.Map<Dealer>(createDto);
 
+
+            ///////////////////////////////something wrong  not assign 
+
             dealer.CreatedById = userId;
             _dealerDbContext.Add(dealer);
             _dealerDbContext.SaveChanges();
@@ -81,6 +84,8 @@ namespace CarDealerAPI.Services
                 .Dealers
                 .FirstOrDefault(r => r.Id == id);
 
+            
+
             if (dealer == null) throw new NotFoundException("dealer not found");
 
             var authResult = _authorizationService.AuthorizeAsync(user, dealer, new ResouceOperationRequirement(ResouceOperation.Delete)).Result;
@@ -89,11 +94,13 @@ namespace CarDealerAPI.Services
             {
                 throw new ForbiddenExc("Access denied");
             }
-
+            
             _dealerDbContext.Dealers.Remove(dealer);
             _dealerDbContext.SaveChanges();
+            _logger.LogInformation($"Deleted successfully");
 
-            
+
+
         }
 
         public void UpdateDealer(DealerUpdateDTO dto, int id, ClaimsPrincipal user)

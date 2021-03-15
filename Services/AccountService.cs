@@ -64,8 +64,11 @@ namespace CarDealerAPI.Services
 
         public void RegisterUser(UserCreateDTO userDto)
         {
+
+            
             var newUser = new User()
             {
+
                 DateOfBirth = userDto.DateOfBirth,
                 Email = userDto.Email,
                 Nationality = userDto.Nationality,
