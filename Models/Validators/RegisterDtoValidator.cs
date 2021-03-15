@@ -23,15 +23,14 @@ namespace CarDealerAPI.Models.Validators
                     var checkEmail = dealerDbContext.Users.Any(u => u.Email == email);
                     if (checkEmail)
                     {
-                        context.AddFailure("Email", "Please insert another email this is taken");
+                        context.AddFailure("Email :", "Please insert another email this is taken");
                     }
                 });
 
             RuleFor(p => p.Password).MinimumLength(6).MaximumLength(150);
 
             RuleFor(p => p.ConfirmPassword).Equal(p => p.Password);
-
-            
+ 
         }
     }
 }

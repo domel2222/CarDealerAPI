@@ -49,12 +49,13 @@ namespace CarDealerAPI.Services
 
             return result;
         }
-        public IEnumerable<DealerReadDTO> GetAllDealers()
+        public IEnumerable<DealerReadDTO> GetAllDealers(string search)
         {
             var dealers = _dealerDbContext
                 .Dealers
                 .Include(r => r.Address)
                 .Include(r => r.Cars)
+                .Where(s=>s.DealerName.ToUpper().Contains(search.ToUpper()) || s.Description.ToUpper().Contains(search.ToUpper()))
                 .ToList();
 
             var dealersDto = _mapper.Map<List<DealerReadDTO>>(dealers);

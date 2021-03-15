@@ -35,8 +35,7 @@ namespace CarDealerAPI.Controllers
         [Authorize(Policy = "ColorEyes")]
         [Authorize(Policy = "OnlyForEagles")]
         
-        
-        public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers()
+        public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers(string search)
         {           
 
 
@@ -49,7 +48,7 @@ namespace CarDealerAPI.Controllers
             //} ;
             //try
             //{
-                var dealersDTO = _dealerService.GetAllDealers();
+                var dealersDTO = _dealerService.GetAllDealers(search);
 
                 return Ok(dealersDTO);
             //}
@@ -76,7 +75,13 @@ namespace CarDealerAPI.Controllers
         // test for user 
         public ActionResult CreateDealer(DealerCreateDTO createDto)
         {
+
+            // hot to itterate for DTO  form body
             //var userId =   int.Parse(User.FindFirst(u => u.Type == ClaimTypes.NameIdentifier).Value);
+            //foreach (var item in createDto)
+            //{
+
+            //}
             var id = _dealerService.CreateDealer(createDto);
 
             return Created($"api/Dealer/{id}", null);
@@ -87,7 +92,7 @@ namespace CarDealerAPI.Controllers
         public ActionResult DeleteDealer(int id)
         {
             //_dealerService.DeleteDealer(id, User);
-            _dealerService.DeleteDealer(id,);
+            _dealerService.DeleteDealer(id);
 
             return NoContent();
         }
