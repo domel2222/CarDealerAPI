@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
+using CarDealerAPI.Extensions;
 using CarDealerAPI.Models;
 using CarDealerAPI.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -35,7 +36,7 @@ namespace CarDealerAPI.Controllers
         [Authorize(Policy = "ColorEyes")]
         [Authorize(Policy = "OnlyForEagles")]
         
-        public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers(string search)
+        public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers([FromQuery] DealerQuerySearch query)
         {           
 
 
@@ -48,7 +49,7 @@ namespace CarDealerAPI.Controllers
             //} ;
             //try
             //{
-                var dealersDTO = _dealerService.GetAllDealers(search);
+                var dealersDTO = _dealerService.GetAllDealers(query);
 
                 return Ok(dealersDTO);
             //}
@@ -75,7 +76,7 @@ namespace CarDealerAPI.Controllers
         // test for user 
         public ActionResult CreateDealer(DealerCreateDTO createDto)
         {
-
+            //use []  from client and iterate by them ..... :)
             // hot to itterate for DTO  form body
             //var userId =   int.Parse(User.FindFirst(u => u.Type == ClaimTypes.NameIdentifier).Value);
             //foreach (var item in createDto)
