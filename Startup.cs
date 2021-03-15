@@ -69,7 +69,8 @@ namespace CarDealerAPI
             {
                 policy.AddPolicy("HasNation", b => b.RequireClaim("Nationality", "Poland"));
                 policy.AddPolicy("ColorEyes", b => b.RequireClaim("ColorEye", "blue", "green", "grey"));
-                policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(18)));
+                policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(18)));  // magic number ????
+                policy.AddPolicy("DealerMinimum", b => b.AddRequirements(new MultiDealerRequiment(2))); // magic number ????
 
             });
             
