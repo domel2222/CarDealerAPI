@@ -1,5 +1,6 @@
 ﻿using CarDealerAPI.DTOS;
 using CarDealerAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace CarDealerAPI.Controllers
     [Route("api/dealer/{dealerId}/car")]
     [ApiController]
     [Produces("application/json")]
+    [Authorize]
     public class CarController : ControllerBase
     {
         private readonly ICarService _carService;
@@ -38,6 +40,7 @@ namespace CarDealerAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "DealerMinimum")]
         public ActionResult<List<CarReadDTO>>  GetAllCars(int dealerId)
         {
             var cars = _carService.GetAllCarForDealer(dealerId);
