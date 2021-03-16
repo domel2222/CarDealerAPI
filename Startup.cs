@@ -29,6 +29,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CarDealerAPI.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using CarDealerAPI.Extensions;
 
 namespace CarDealerAPI
 {
@@ -90,6 +91,7 @@ namespace CarDealerAPI
             services.AddHttpContextAccessor();
             services.AddScoped<RequestTimeMiddle>();
             services.AddScoped<IValidator<UserCreateDTO>, RegisterDtoValidator>();
+            services.AddScoped<IValidator<DealerQuerySearch>, DealerQuerySearchValidator>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarDEaler", Version = "v1" });

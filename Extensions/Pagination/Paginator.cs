@@ -21,7 +21,7 @@ namespace CarDealerAPI.Extensions.Pagination
             TotalPages = (int)Math.Ceiling(totalItems/(double)pageSize);
             TotalItems = totalItems;
             StartPoint = pageSize * pageNumber - pageSize + 1;
-            EndPoint = StartPoint + pageSize + 1;
+            EndPoint = StartPoint + pageSize - 1;
 
         }
     }

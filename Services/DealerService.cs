@@ -68,7 +68,7 @@ namespace CarDealerAPI.Services
 
             var totalItems = dealers.Count();
 
-            var dealersDto = _mapper.Map<List<DealerReadDTO>>(dealers);
+            var dealersDto = _mapper.Map<List<DealerReadDTO>>(paginatedealers);
 
             var result = new Paginator<DealerReadDTO>(dealersDto, totalItems, query.PageSize, query.PageNumber);
 
