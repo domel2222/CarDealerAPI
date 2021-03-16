@@ -8,6 +8,7 @@ namespace CarDealerAPI.Extensions.Pagination
 {
     public enum DirectionSort
     {
-        
+        Ascending,
+        Descending
     }
 }

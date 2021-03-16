@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +62,8 @@ namespace CarDealerAPI.Services
                 .Where(s => query.Search == null ||
                                     (s.DealerName.ToUpper().Contains(query.Search.ToUpper()) ||
                                     s.Description.ToUpper().Contains(query.Search.ToUpper())));
+
+            dealers = SortQuery(query, dealers);
 
             var paginatedealers = dealers.Skip(skipPages)
                                 .Take(query.PageSize)
@@ -144,6 +147,28 @@ namespace CarDealerAPI.Services
         private int ComputeSkip(DealerQuerySearch query)
         {
             return query.PageSize * query.PageNumber - query.PageSize;
+        }
+
+        private  IQueryable<Dealer> SortQuery(DealerQuerySearch query, IQueryable<Dealer> dealers)
+        {
+            if (!string.IsNullOrEmpty(query.SortBy))
+            {
+                var columnSelector = new Dictionary<string, Expression<Func<Dealer, object>>>
+                {
+                    {nameof(Dealer.DealerName), a=>a.DealerName },
+                    {nameof(Dealer.Description), a=>a.Description },
+                    {nameof(Dealer.Category), a=>a.Category },
+                    {nameof(Dealer.Address.Country),a=>a.Address.Country  }
+                };
+
+                var selectedColumn = columnSelector[query.SortBy];
+
+                dealers = query.DirectionSort == DirectionSort.Ascending
+                ? dealers.OrderBy(selectedColumn)
+                : dealers.OrderByDescending(selectedColumn);
+            }
+
+            return dealers;
         }
     }
 }
