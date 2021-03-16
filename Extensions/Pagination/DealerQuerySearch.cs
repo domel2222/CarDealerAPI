@@ -12,7 +12,7 @@ namespace CarDealerAPI.Extensions
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
         public string SortBy { get; set; }
-        public string DirectionSort { get;set; }
+        public DirectionSort DirectionSort { get;set; }
 
     }
 }

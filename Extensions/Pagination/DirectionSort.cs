@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarDealerAPI.Extensions.Validators
+namespace CarDealerAPI.Extensions.Pagination
 {
     public enum DirectionSort
     {
-        Ascending,
-        Descending
+        
     }
 }

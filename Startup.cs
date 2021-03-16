@@ -30,6 +30,7 @@ using System.Text;
 using CarDealerAPI.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using CarDealerAPI.Extensions;
+using CarDealerAPI.Extensions.Validators;
 
 namespace CarDealerAPI
 {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarDealerAPI.Models.Validators
+namespace CarDealerAPI.Extensions.Validators
 {
     public class DealerQuerySearchValidator : AbstractValidator<DealerQuerySearch>
     {
