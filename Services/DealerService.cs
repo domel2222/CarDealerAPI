@@ -4,6 +4,7 @@ using CarDealerAPI.Contexts;
 using CarDealerAPI.DTOS;
 using CarDealerAPI.Exceptions;
 using CarDealerAPI.Extensions;
+using CarDealerAPI.Extensions.Pagination;
 using CarDealerAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -50,23 +51,28 @@ namespace CarDealerAPI.Services
 
             return result;
         }
-        public IEnumerable<DealerReadDTO> GetAllDealers(DealerQuerySearch query)
+        public Paginator<DealerReadDTO> GetAllDealers(DealerQuerySearch query)
         {
             var skipPages = ComputeSkip(query);
             var dealers = _dealerDbContext
                 .Dealers
                 .Include(r => r.Address)
                 .Include(r => r.Cars)
-                .Where(s=> query.search == null ||
-                                    (s.DealerName.ToUpper().Contains(query.search.ToUpper()) || 
-                                    s.Description.ToUpper().Contains(query.search.ToUpper())))
-                        .Skip(skipPages)
-                        .Take(query.pageSize)
-                        .ToList();
+                .Where(s => query.Search == null ||
+                                    (s.DealerName.ToUpper().Contains(query.Search.ToUpper()) ||
+                                    s.Description.ToUpper().Contains(query.Search.ToUpper())));
+
+            var paginatedealers = dealers.Skip(skipPages)
+                                .Take(query.PageSize)
+                                .ToList();
+
+            var totalItems = dealers.Count();
 
             var dealersDto = _mapper.Map<List<DealerReadDTO>>(dealers);
 
-            return dealersDto;
+            var result = new Paginator<DealerReadDTO>(dealersDto, totalItems, query.PageSize, query.PageNumber);
+
+            return result;
 
         }
 
@@ -137,7 +143,7 @@ namespace CarDealerAPI.Services
 
         private int ComputeSkip(DealerQuerySearch query)
         {
-            return query.pageSize * (query.pageNumber - 1);
+            return query.PageSize * query.PageNumber - query.PageSize;
         }
     }
 }

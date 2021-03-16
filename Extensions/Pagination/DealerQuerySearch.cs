@@ -8,8 +8,8 @@ namespace CarDealerAPI.Extensions
 {
     public class DealerQuerySearch
     {
-        public string search { get; set; }
-        public int pageSize { get; set; }
-        public int pageNumber { get; set; }
+        public string Search { get; set; }
+        public int PageSize { get; set; }
+        public int PageNumber { get; set; }
     }
 }
