@@ -71,8 +71,8 @@ namespace CarDealerAPI
             {
                 policy.AddPolicy("HasNation", b => b.RequireClaim("Nationality", "Poland"));
                 policy.AddPolicy("ColorEyes", b => b.RequireClaim("ColorEye", "blue", "green", "grey"));
-                policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(int.Parse(Configuration["OnlyForEagles"]))));  
-                policy.AddPolicy("DealerMinimum", b => b.AddRequirements(new MultiDealerRequiment(int.Parse(Configuration["MultiDealr"])))); 
+                //policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(int.Parse(Configuration["OnlyForEagles"]))));  
+                //policy.AddPolicy("DealerMinimum", b => b.AddRequirements(new MultiDealerRequiment(int.Parse(Configuration["MultiDealr"])))); 
 
             });
             
@@ -113,7 +113,7 @@ namespace CarDealerAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DealerSeeder seeder)
         {
-
+            app.UseStaticFiles();
             app.UseCors("Dealer");
             seeder.Seed();
             

@@ -1,7 +1,9 @@
-﻿using CarDealerAPI.DTOS;
+﻿using CarDealerAPI.Contexts;
+using CarDealerAPI.DTOS;
 using CarDealerAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,12 @@ namespace CarDealerAPI.Controllers
     public class CarController : ControllerBase
     {
         private readonly ICarService _carService;
+        private readonly DealerDbContext _dealerDbContext;
 
-        public CarController(ICarService carService)
+        public CarController(ICarService carService, DealerDbContext dealerDbContext)
         {
             this._carService = carService;
+            this._dealerDbContext = dealerDbContext;
         }
 
         [HttpPost]
@@ -38,6 +42,16 @@ namespace CarDealerAPI.Controllers
 
             return Ok(car);
         }
+
+        //[HttpGet("user")]
+        //public ActionResult GetUser()
+        //{
+        //        var cos = _dealerDbContext.Users
+        //                        .Include(c => c.Role);
+
+
+        //    return Ok(cos);
+        //}
 
         [HttpGet]
         [Authorize(Policy = "DealerMinimum")]

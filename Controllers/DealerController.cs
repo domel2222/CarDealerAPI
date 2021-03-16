@@ -36,6 +36,8 @@ namespace CarDealerAPI.Controllers
         [Authorize(Policy = "ColorEyes")]
         [Authorize(Policy = "OnlyForEagles")]
         
+
+
         public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers([FromQuery] DealerQuerySearch query)
         {           
 
