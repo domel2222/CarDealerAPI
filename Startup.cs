@@ -23,7 +23,7 @@ using CarDealerAPI.Models;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using CarDealerAPI.DTOS;
-using CarDealerAPI.Models.Validators;
+using CarDealerAPI.Exceptions;
 using CarDealerAPI.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -71,8 +71,8 @@ namespace CarDealerAPI
             {
                 policy.AddPolicy("HasNation", b => b.RequireClaim("Nationality", "Poland"));
                 policy.AddPolicy("ColorEyes", b => b.RequireClaim("ColorEye", "blue", "green", "grey"));
-                policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(18)));  // magic number ????
-                policy.AddPolicy("DealerMinimum", b => b.AddRequirements(new MultiDealerRequiment(2))); // magic number ????
+                policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(int.Parse(Configuration["OnlyForEagles"]))));  
+                policy.AddPolicy("DealerMinimum", b => b.AddRequirements(new MultiDealerRequiment(int.Parse(Configuration["MultiDealr"])))); 
 
             });
             
@@ -98,6 +98,14 @@ namespace CarDealerAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarDEaler", Version = "v1" });
             });
 
+            services.AddCors(option =>
+            {
+                option.AddPolicy("Dealer", builder =>
+                    builder.AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins(Configuration["AllowClient"]));
+            });
+
 
             //services.AddAutoMapper(typeof(DealerProfile).GetTypeInfo().Assembly);
         }
@@ -106,6 +114,7 @@ namespace CarDealerAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DealerSeeder seeder)
         {
 
+            app.UseCors("Dealer");
             seeder.Seed();
             
             if (env.IsDevelopment())
