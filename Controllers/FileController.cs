@@ -14,7 +14,7 @@ namespace CarDealerAPI.Controllers
     [ApiController]
     [Route("[controller]")]
     //[Authorize]
-       
+    [ResponseCache(Duration = 1200, VaryByQueryKeys = new[] { "fileName"})]   
     public class FileController : ControllerBase
     {
         public ActionResult GetFile([FromQuery] string fileName)

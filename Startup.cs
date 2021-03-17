@@ -116,6 +116,7 @@ namespace CarDealerAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DealerSeeder seeder)
         {
+            app.UseResponseCaching();
             app.UseStaticFiles();
             app.UseCors("Dealer");
             seeder.Seed();
