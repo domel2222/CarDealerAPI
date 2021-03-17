@@ -18,6 +18,7 @@ namespace CarDealerAPI
         }
         public void Seed()
         {
+            //add auto migration into server
             if (_dealerDbContext.Database.CanConnect())
             {
                 if (!_dealerDbContext.Roles.Any())
