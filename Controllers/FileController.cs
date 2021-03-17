@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
@@ -11,6 +13,8 @@ namespace CarDealerAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    //[Authorize]
+       
     public class FileController : ControllerBase
     {
         public ActionResult GetFile([FromQuery] string fileName)
@@ -31,7 +35,26 @@ namespace CarDealerAPI.Controllers
 
             var fileContent = System.IO.File.ReadAllBytes(filePath);
 
-            return File(fileContent, filePath, fileName);
+            return File(fileContent, fileType, fileName);
+        }
+
+        [HttpPost]
+        public ActionResult Upload([FromForm] IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                var rootPath = Directory.GetCurrentDirectory();
+                var faileName = file.FileName;
+                var fullPath = $"{rootPath}/FileToDownloadForLoggedUser/{faileName}";
+
+                using (var source = new FileStream(fullPath, FileMode.Create))
+                {
+                    file.CopyTo(source);
+
+                }
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

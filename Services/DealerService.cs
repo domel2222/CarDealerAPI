@@ -54,7 +54,7 @@ namespace CarDealerAPI.Services
         }
         public Paginator<DealerReadDTO> GetAllDealers(DealerQuerySearch query)
         {
-            var skipPages = ComputeSkip(query);
+            
             var dealers = _dealerDbContext
                 .Dealers
                 .Include(r => r.Address)
@@ -65,6 +65,7 @@ namespace CarDealerAPI.Services
 
             dealers = SortQuery(query, dealers);
 
+            var skipPages = ComputeSkip(query);
             var paginatedealers = dealers.Skip(skipPages)
                                 .Take(query.PageSize)
                                 .ToList();

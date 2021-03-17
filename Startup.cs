@@ -66,13 +66,16 @@ namespace CarDealerAPI
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.JwtKey)),
                 };
             });
-
+            //var moje = Configuration["MyVariables:OnlyForEagles"];
             services.AddAuthorization(policy =>
             {
+                
                 policy.AddPolicy("HasNation", b => b.RequireClaim("Nationality", "Poland"));
                 policy.AddPolicy("ColorEyes", b => b.RequireClaim("ColorEye", "blue", "green", "grey"));
-                //policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(int.Parse(Configuration["OnlyForEagles"]))));  
-                //policy.AddPolicy("DealerMinimum", b => b.AddRequirements(new MultiDealerRequiment(int.Parse(Configuration["MultiDealr"])))); 
+                policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(int.Parse(Configuration["MyVariables:OnlyForEagles"]))));
+                //policy.AddPolicy("OnlyForEagles", b => b.AddRequirements(new CheckAge(18)));
+                //policy.AddPolicy("DealerMinimum", b => b.AddRequirements(new MultiDealerRequiment(2)));
+                policy.AddPolicy("DealerMinimum", b => b.AddRequirements(new MultiDealerRequiment(int.Parse(Configuration["MyVariables:MultiDealer"]))));
 
             });
             
