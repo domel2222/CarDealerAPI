@@ -15,6 +15,7 @@ namespace CarDealerAPI
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -23,7 +24,6 @@ namespace CarDealerAPI
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-            .UseNLog();
-                
+            .UseNLog();      
     }
 }
