@@ -27,6 +27,7 @@ namespace CarDealerAPI.Services
         private readonly ILogger<DealerService> _logger;
         private readonly IAuthorizationService _authorizationService;
         private readonly IUserContextService _userContextService;
+        
 
         public DealerService(DealerDbContext dealerDbContext, IMapper mapper, ILogger<DealerService> logger, 
             IAuthorizationService authorizationService, IUserContextService userContextService)
@@ -119,6 +120,9 @@ namespace CarDealerAPI.Services
             
             _dealerDbContext.Dealers.Remove(dealer);
             _dealerDbContext.SaveChanges();
+
+
+
             _logger.LogInformation($"Deleted successfully");
         }
 

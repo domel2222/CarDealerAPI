@@ -24,6 +24,13 @@ namespace CarDealerAPI
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-            .UseNLog();      
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Trace);
+                })
+            .UseNLog();
+
+
     }
 }

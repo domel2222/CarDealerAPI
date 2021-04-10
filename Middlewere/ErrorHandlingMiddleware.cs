@@ -51,33 +51,6 @@ namespace CarDealerAPI.Middlewere
                 await context.Response.WriteAsync("Server error, try again");
             }
         }
-        //public async Task InvokeAsync(HttpContext context, RequestDelegate next)
-        //{
-        //    try
-        //    {
-        //        await next.Invoke(context);
-        //    }
-        //catch (ForbidException forbidException)
-        //{
-        //    context.Response.StatusCode = 403;
-        //}
-        //catch (BadRequestException badRequestException)
-        //{
-        //    context.Response.StatusCode = 400;
-        //    await context.Response.WriteAsync(badRequestException.Message);
-        //}
-        //catch (NotFoundException notFoundException)
-        //{
-        //    context.Response.StatusCode = 404;
-        //    await context.Response.WriteAsync(notFoundException.Message);
-        //}
-        //catch (Exception e)
-        //{
-        //    _logger.LogError(e, e.Message);
-
-        //    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        //    await context.Response.WriteAsync("Something went wrong");
-        //}
     
     }
 }

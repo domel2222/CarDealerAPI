@@ -4,14 +4,16 @@ using CarDealerAPI.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarDealerAPI.Migrations
 {
     [DbContext(typeof(DealerDbContext))]
-    partial class DealerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210320130914_LoggerEntity")]
+    partial class LoggerEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,24 +115,6 @@ namespace CarDealerAPI.Migrations
                     b.HasIndex("CreatedById");
 
                     b.ToTable("Dealers");
-                });
-
-            modelBuilder.Entity("CarDealerAPI.Models.LoggerEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Application")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Level")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Loggers");
                 });
 
             modelBuilder.Entity("CarDealerAPI.Models.Role", b =>

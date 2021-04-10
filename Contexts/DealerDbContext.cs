@@ -25,6 +25,7 @@ namespace CarDealerAPI.Contexts
         public DbSet<Address> Adresses {get;set;}
         public DbSet<User> Users {get;set;}
         public DbSet<Role> Roles {get;set;}
+        public DbSet<LoggerEntity> Loggers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

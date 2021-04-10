@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace CarDealerAPI.Controllers
     [ApiController]
     [Produces("application/json")]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class DealerController : ControllerBase
     {
         private readonly IDealerService _dealerService;
@@ -33,13 +34,21 @@ namespace CarDealerAPI.Controllers
 
         [HttpGet]
         //[Authorize(Policy = "ColorEyes")]
-        [Authorize(Policy = "ColorEyes")]
-        [Authorize(Policy = "OnlyForEagles")]
+        //[Authorize(Policy = "ColorEyes")]
+        //[Authorize(Policy = "OnlyForEagles")]
         
 
 
         public ActionResult<IEnumerable<DealerReadDTO>> GetAllDealers([FromQuery] DealerQuerySearch query)
-        {           
+        {
+
+            //var Drugilogger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+
+            //Drugilogger.Info("hurraddizała");
+            //Logger logger = LogManager.GetLogger("databaseLogger");
+
+           //_dealerService.   logger.Info("lipdssdgsgsgsdg");
+
 
 
             //var dealersDTO = dealers.Select(r => new DealerDTO()
